@@ -1,0 +1,106 @@
+#!/usr/bin/env python
+# -- coding: utf-8 --
+
+import os
+import sys
+
+def create_package(project_name):
+    os.system(f"mkdir {project_name}")
+    os.system(f"cd {project_name} && mkdir pkg_{project_name}")
+    os.system(f"touch {project_name}/pkg_{project_name}/__init__.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/get_data.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/model.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/pipeline.py")
+    os.system(f"touch {project_name}/pkg_{project_name}/preprocessing.py")
+    os.system(f"touch {project_name}/README.md")
+    os.system(f"touch {project_name}/Makefile")
+    os.system(f"touch {project_name}/requirements.txt")
+    os.system(f"touch {project_name}/Dockerfile")
+    os.system(f"touch {project_name}/setup.py")
+    os.system(f"cd {project_name} && mkdir API")
+    os.system(f"touch {project_name}/API/fast_api.py")
+    os.system(f"cd {project_name} && mkdir notebooks")
+    os.system(f"cd {project_name} && mkdir scripts")
+    os.system(f"touch {project_name}/scripts/run_{project_name}")
+    os.system(f"cd {project_name} && mkdir data")
+
+def write_requirements():
+    lines = ['matplotlib', 'pandas', 'numpy', 'uvicorn',
+             'seaborn', 'statsmodel', 'fastapi', 'joblib']
+    with open('starbucks/requirements.txt', 'w') as f:
+        for line in lines:
+            write_function_line(f, line, 1, 0)
+
+
+def write_setup():
+    lines = ["setup(", "name='starbucks',", "version='0.0.1',",
+             "packages=['pkg_starbucks'],",
+             "scripts=['scripts/run_starbucks'],)"]
+
+    with open('starbucks/setup.py', 'w') as f:
+        write_function_line(f, "from setuptools import setup", 2, 0)
+        for line in lines:
+            write_function_line(f, line, 1, 2)
+
+
+def write_makefile():
+    lines = ["install_requirements:", "@pip install -r requirements.txt"]
+    with open('starbucks/Makefile', 'w') as f:
+        for line in lines:
+            write_function_line(f, line, 1, 2)
+
+
+def write_script():
+    lines = ['os.system(echo "hello")']
+    with open('starbucks/scripts/run_starbucks', 'w') as f:
+        write_function_line(f, '#!/usr/bin/env python', 1, 0)
+        write_function_line(f, '# -- coding: utf-8 --', 2, 0)
+        write_function_line(f, 'import os', 2, 0)
+        write_function_line(f, 'os.system("echo \'hello\'")', 1, 0)
+
+def write_fast_api():
+    with open('starbucks/API/fast_api.py', 'w') as f:
+        write_function_line(f, 'from fastapi import FastAPI', 1, 0)
+        write_function_line(f, 'import uvicorn', 1, 0)
+        write_function_line(f, 'import joblib', 2, 0)
+        write_function_line(f, 'app = FastAPI()', 1, 0)
+        write_function_line(f, 'model = joblib.load("linear_starbucks")', 2, 0)
+        write_function_line(f, '@app.get("/")', 1, 0)
+        write_function_line(f, 'def root():', 1, 2)
+        write_function_line(f, "return {'message': 'Hello World'}", 2, 0)
+        write_function_line(f, '@app.get("/predict/")', 1, 0)
+        write_function_line(f, 'def index(fats=15, carbs=50, prots=10, fibers=5):', 1, 2)
+        write_function_line(f, 'fats = int(fats)', 1, 2)
+        write_function_line(f, 'carbs = int(carbs)', 1, 2)
+        write_function_line(f, 'prots = int(prots)', 1, 2)
+        write_function_line(f, 'fibers = int(fibers)', 1, 2)
+        write_function_line(f, 'prediction = model.predict([[fats, carbs, prots, fibers]])', 1, 2)
+        write_function_line(f, 'predict = int(prediction[0])', 1, 2)
+        write_function_line(f, 'return {"message": predict}', 1, 2)
+
+
+def write_dockerfile():
+    with open('starbucks/Dockerfile', 'w') as f:
+        write_function_line(f, "FROM python:3.8.5", 2, 0)
+        write_function_line(f, "COPY api /api", 1, 0)
+        write_function_line(f, "COPY pkg_starbucks /pkg_starbucks", 1, 0)
+        write_function_line(f, "RUN pip install --upgrade pip", 1, 0)
+        write_function_line(f, "COPY requirements.txt /requirements.txt", 2, 0)
+        write_function_line(f, "RUN pip install -r requirements.txt", 2, 0)
+        write_function_line(f, "CMD uvicorn api.fast:app --host 0.0.0.0", 0, 0)
+
+
+def write_function_line(function, string, number_of_enter, number_of_tab):
+    function.write(string)
+    function.write('\n' * number_of_enter)
+    function.write('\t' * number_of_tab)
+
+
+create_package("starbucks")
+write_requirements()
+write_setup()
+write_makefile()
+write_script()
+write_fast_api()
+write_dockerfile()
+#write_function_line()
