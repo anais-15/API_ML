@@ -15,11 +15,11 @@ Lien vers l'Api : http://starbucksfood.azurewebsites.net
 
 Pour créer et communiquer avec l'API
 
-Importer FastApi
-Créer une instance app : Exemple app = FastAPI()
-Définir les requêtes (GET, POST, DELETE...)
-Définir le chemin de la requête ex : (@app.get("/root/"))
-Lancer le serveur de développement
+  * Importer FastApi
+  * Créer une instance app : Exemple app = FastAPI()
+  * Définir les requêtes (GET, POST, DELETE...)
+  * Définir le chemin de la requête ex : (@app.get("/root/"))
+  * Lancer le serveur de développement
 
 Ressources : https://fastapi.tiangolo.com/tutorial/first-steps/
 
