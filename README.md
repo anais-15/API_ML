@@ -1,4 +1,4 @@
-# Création d'une Api d'intelligence artificielle
+# Création d'une Api d'Intelligence Artificielle
 
 ## Starbucks Calories
 
