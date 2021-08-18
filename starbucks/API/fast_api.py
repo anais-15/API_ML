@@ -17,9 +17,6 @@ app.add_middleware(
 
 model = joblib.load("../linear_starbucks.joblib")
 
-@app.get("/")
-def root():
-		return {'message': 'Hello World'}
 
 @app.get("/predict/")
 def index(fats=15, carbs=50, prots=10, fibers=5):
